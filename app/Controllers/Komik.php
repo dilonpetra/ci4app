@@ -6,48 +6,48 @@ use App\Models\KomikModel;
 
 class Komik extends BaseController
 {
-    protected $komikModel;
-    protected $helpers = ['form'];
+    protected $komikModel; // Model untuk komik
+    protected $helpers = ['form']; // Helper untuk form
     public function __construct()
     {
-        $this->komikModel = new KomikModel();
+        $this->komikModel = new KomikModel(); // Instansiasi model komik
     }
     public function index()
     {
-
+        // Title
         $data = [
             'title' => 'Daftar Komik ',
-            'komik' => $this->komikModel->getKomik()
+            'komik' => $this->komikModel->getKomik(),
         ];
-
-
-
-
 
         return view('komik/index', $data);
     }
 
     public function detail($slug)
     {
+        // Get the komik with the slug
         $data = [
             'title' => 'Detail Komik',
             'komik' => $this->komikModel->getKomik(($slug))
         ];
 
-        //jika komik tidak ada di tabel
-        if (empty($data['komik'])) {
+        // If the komik doesn't exist, throw an error
+        if (!$data['komik']) {
             throw new \CodeIgniter\Exceptions\PageNotFoundException('Judul komik ' . $slug . ' tidak ditemukan.');
         }
+
         return view('komik/detail', $data);
     }
 
     public function create()
     {
+        // Data untuk title dan validation
         $data = [
             'title' => 'Form Tambah Data Komik',
             'validation' => \Config\Services::validation()
         ];
 
+        // Membuka halaman create
         return view('komik/create', $data);
     }
 
